@@ -9,12 +9,12 @@ Created on Mon Oct 22 14:57:16 2018
 import meusip, siptrans
 
 class contiudo:
-    
-    def __init__(self, my_IP, my_number, video_port, audio_port, cam_IP):
-        
+
+    def __init__(self, my_IP, my_number, video_port, audio_port, cam_IP, cam_number):
+
         # cria um UserAgent com originador "100" e IP do UAC=192.168.1.53
         c = siptrans.UserAgent(my_number, ip=my_IP)
-         
+
         # adiciona uma descrição de media do tipo audio ao UAC, incluindo
         # respectivos codecs
         media = meusip.SDPMedia('video',video_port)
@@ -27,8 +27,10 @@ class contiudo:
         media.add_codec(0, 'PCMU/8000')
         media.add_codec(1, 'PCMA/8000')
         c.add_media(media)
-        
+
+        c.call(cam_number,cam_IP)
+
         self.sdp = c.body
-    
+
     def getSDP(self):
         return self.sdp
