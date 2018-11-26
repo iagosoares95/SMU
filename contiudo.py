@@ -28,7 +28,7 @@ class contiudo:
         media.add_codec(1, 'PCMA/8000')
         c.add_media(media)
 
-        c.call(cam_number,cam_IP)
+        c.call(cam_number,'192.168.1.1')
 
         self.sdp = c.body
 

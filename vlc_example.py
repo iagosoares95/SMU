@@ -20,7 +20,7 @@ import vlc
 class ApplicationWindow(Gtk.Window):
 
     def __init__(self):
-        self.my_IP = '192.168.1.222'
+        self.my_IP = '192.168.1.221'
         self.my_number = 6032
         self.video_port = 4000
         self.audio_port = 4001
@@ -30,13 +30,13 @@ class ApplicationWindow(Gtk.Window):
         self.ip_server = '192.168.1.1'
         self.port_reg_dest = 5060
 
-        self.obj_sip_reg = sip_register.sip_register(my_IP, port_reg, ip_server, port_reg_dest, my_number)
+        self.obj_sip_reg = sip_register.sip_register(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number)
         self.reg_str = self.obj_sip_reg.register()
         self.obj_sip_reg.send(self.reg_str)
         Gtk.Window.__init__(self, title="Python-Vlc Media Player")
         self.player_paused=False
         self.is_player_active = False
-        self.connect("destroy",Gtk.main_quit)
+        self.connect("destroy", Gtk.main_quit)
 
     def show(self):
         self.show_all()
@@ -78,6 +78,10 @@ class ApplicationWindow(Gtk.Window):
         self.vbox.pack_start(self.draw_area, True, True, 0)
         self.vbox.pack_start(self.hbox, False, False, 0)
 
+    def do_delete_event(self, event):
+        self.reg_str = self.obj_sip_reg.deregister()
+        self.obj_sip_reg.send(self.reg_str)
+
     def stop_player(self, widget, data=None):
         self.player.stop()
         self.is_player_active = False
@@ -103,8 +107,6 @@ class ApplicationWindow(Gtk.Window):
             self.player.pause()
             self.playback_button.set_image(self.play_image)
             self.player_paused = True
-            self.reg_str = obj_sip_reg.deregister()
-            self.obj_sip_reg.send(reg_str)
         else:
             pass
 
@@ -121,7 +123,9 @@ class ApplicationWindow(Gtk.Window):
         self.is_player_active = True
 
 if __name__ == '__main__':
-    my_IP = '192.168.1.222'
+    window = ApplicationWindow()
+
+    my_IP = '192.168.1.221'
     my_number = 6032
     video_port = 4000
     audio_port = 4001
@@ -134,7 +138,6 @@ if __name__ == '__main__':
     open('stream.sdp','w').write(cont.getSDP())
     MRL = 'stream.sdp'
 #    MRL = 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov'
-    window = ApplicationWindow()
     window.setup_objects_and_events()
     window.show()
     Gtk.main()
