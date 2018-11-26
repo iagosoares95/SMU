@@ -13,12 +13,26 @@ from gi.repository import Gtk
 gi.require_version('GdkX11', '3.0')
 from gi.repository import GdkX11
 import contiudo
+import sip_register
 
 import vlc
 
 class ApplicationWindow(Gtk.Window):
 
     def __init__(self):
+        self.my_IP = '192.168.1.222'
+        self.my_number = 6032
+        self.video_port = 4000
+        self.audio_port = 4001
+        self.cam_IP = '192.168.1.211'
+        self.cam_number = '6002'
+        self.port_reg = 5060
+        self.ip_server = '192.168.1.1'
+        self.port_reg_dest = 5060
+
+        self.obj_sip_reg = sip_register.sip_register(my_IP, port_reg, ip_server, port_reg_dest, my_number)
+        self.reg_str = self.obj_sip_reg.register()
+        self.obj_sip_reg.send(self.reg_str)
         Gtk.Window.__init__(self, title="Python-Vlc Media Player")
         self.player_paused=False
         self.is_player_active = False
@@ -89,6 +103,8 @@ class ApplicationWindow(Gtk.Window):
             self.player.pause()
             self.playback_button.set_image(self.play_image)
             self.player_paused = True
+            self.reg_str = obj_sip_reg.deregister()
+            self.obj_sip_reg.send(reg_str)
         else:
             pass
 
@@ -105,13 +121,16 @@ class ApplicationWindow(Gtk.Window):
         self.is_player_active = True
 
 if __name__ == '__main__':
-    my_IP = '192.168.1.10'
-    my_number = '100'
+    my_IP = '192.168.1.222'
+    my_number = 6032
     video_port = 4000
     audio_port = 4001
     cam_IP = '192.168.1.211'
     cam_number = '6002'
-    cont = contiudo.contiudo(my_IP, my_number, video_port, audio_port, cam_IP, cam_number)
+    port_reg = 5060
+    ip_server = '192.168.1.1'
+    port_reg_dest = 5060
+    cont = contiudo.contiudo(my_IP, str(my_number), video_port, audio_port, cam_IP, cam_number)
     open('stream.sdp','w').write(cont.getSDP())
     MRL = 'stream.sdp'
 #    MRL = 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov'
