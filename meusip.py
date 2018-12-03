@@ -201,6 +201,7 @@ class SIPMessage:
     
     @To.setter
     def To(self, uri):
+        print(uri)
         if isinstance(uri, str): uri = ContactURI.parse(uri)
         if not isinstance(uri, ContactURI): raise ValueError('uri deve ser str ou ContactURI')
         self._headers['To'] =uri

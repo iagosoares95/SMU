@@ -14,7 +14,7 @@ import fcntl
 #import struct
 import time
 import random
-
+import select
 # =============================================================================
 # def get_ip_address(ifname='eth0'):
 #     s = socket(AF_INET, SOCK_DGRAM)
@@ -122,8 +122,10 @@ class UserAgent:
         req.ContentType = 'application/sdp'
         via = meusip.ViaHeader(self.ip, self.port)
         req.Via = via
-        req.From = 'sip:%s@%s;tag=%s' % (self.orig, self.ip, self.tag)
+        req.From = 'sip:%s@%s;tag=%s' % (self.orig, '192.168.1.1', self.tag)
+        #req.From = 'sip:%s@%s:5060;tag=%s' % (self.orig, '192.168.1.1', self.tag) 
         req.To = dest
+        #req.To = dest[:-1] + ':5060>' 
         req.Contact = '%s@%s:%d' % (self.orig, self.ip, self.port)
         req.CallId = self.cid
         req.set_header('User-Agent', 'Meu SIP 1.0')
@@ -143,7 +145,17 @@ class UserAgent:
         if msg == None: msg = self._req
         msg = str(msg).encode('ascii')
         #print('>>>', msg)
-        self.sock.sendto(msg,  (self._destip, self._destport))
+        #self.sock.sendto(msg,  (self._destip, self._destport))
+        self.sock.connect((self._destip, self._destport))
+        self.sock.send(msg)
+        ready = select.select([self.sock], [], [], 3)
+        if ready[0]:
+            data, addr = self.sock.recvfrom(1024)
+            data_str = data.decode('ascii').splitlines()[0]
+            resposta = int(data_str.split()[1])
+            assert resposta == 200
+        else:
+            select.error
         
     # Métodos da MEF
     def _START(self, ev, *args):

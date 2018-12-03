@@ -20,7 +20,7 @@ import vlc
 class ApplicationWindow(Gtk.Window):
 
     def __init__(self):
-        self.my_IP = '192.168.1.221'
+        self.my_IP = '192.168.1.11'
         self.my_number = 6032
         self.video_port = 4000
         self.audio_port = 4001
@@ -125,7 +125,7 @@ class ApplicationWindow(Gtk.Window):
 if __name__ == '__main__':
     window = ApplicationWindow()
 
-    my_IP = '192.168.1.221'
+    my_IP = '192.168.1.11'
     my_number = 6032
     video_port = 4000
     audio_port = 4001
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     port_reg = 5060
     ip_server = '192.168.1.1'
     port_reg_dest = 5060
-    cont = contiudo.contiudo(my_IP, str(my_number), video_port, audio_port, cam_IP, cam_number)
+    cont = contiudo.contiudo(my_IP, str(my_number), video_port, audio_port, cam_IP, cam_number, ip_server)
     open('stream.sdp','w').write(cont.getSDP())
     MRL = 'stream.sdp'
 #    MRL = 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov'

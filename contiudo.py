@@ -10,7 +10,7 @@ import meusip, siptrans
 
 class contiudo:
 
-    def __init__(self, my_IP, my_number, video_port, audio_port, cam_IP, cam_number):
+    def __init__(self, my_IP, my_number, video_port, audio_port, cam_IP, cam_number, ip_server):
 
         # cria um UserAgent com originador "100" e IP do UAC=192.168.1.53
         c = siptrans.UserAgent(my_number, ip=my_IP)
@@ -28,7 +28,7 @@ class contiudo:
         media.add_codec(1, 'PCMA/8000')
         c.add_media(media)
 
-        c.call(cam_number,'192.168.1.1')
+        c.call(cam_number, ip_server)
 
         self.sdp = c.body
 
