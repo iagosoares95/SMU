@@ -7,6 +7,7 @@ Created on Mon Oct 22 14:57:16 2018
 """
 
 import meusip, siptrans
+import selectors
 
 class contiudo:
 
@@ -29,8 +30,16 @@ class contiudo:
         c.add_media(media)
 
         c.call(cam_number, ip_server)
-
-        self.sdp = c.body
+        sched = selectors.DefaultSelector()
+        sched.register(c.fileno, selectors.EVENT_READ)
+        while True:
+            ev = sched.select(5000)
+            if not ev: # se ocorreu timeout
+                c.handle_timeout()
+            else: # se uma mensagem foi recebida
+                c.handle()
+                self.sdp = c.body
+            if c.idle: break # se chamada encerrou, então termina
 
     def getSDP(self):
         return self.sdp
