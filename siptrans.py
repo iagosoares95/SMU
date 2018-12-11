@@ -132,7 +132,10 @@ class UserAgent:
         req.branch = self.branch
         req.CSeq = self.cseq
         return req
-        
+    
+    def call_id(self):
+        return self.cid
+
     def _rcv_message(self):
         data,addr = self.sock.recvfrom(UserAgent.MaxMessageSize)
         try:
@@ -153,7 +156,7 @@ class UserAgent:
         #     data, addr = self.sock.recvfrom(1024)
         #     data_str = data.decode('ascii').splitlines()[0]
         #     resposta = int(data_str.split()[1])
-        #     assert resposta == 200
+        #     assert resposta < 400
         # else:
         #     select.error
         

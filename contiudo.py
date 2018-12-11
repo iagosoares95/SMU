@@ -35,20 +35,22 @@ class contiudo:
         
         self.sdp = c.body
         c.call(cam_number, cam_IP)
-
+        self.cid = c.call_id()
         # Um loop de eventos simplificado:
 # detecta eventos (mensagens recebidas, timeouts) e os encaminha ao UAC
          
-        sched = selectors.DefaultSelector()
-        sched.register(c.fileno, selectors.EVENT_READ)
-        while True:
-            ev = sched.select(5000)
-            if not ev: # se ocorreu timeout
-                c.handle_timeout()
-            else: # se uma mensagem foi recebida
-                c.handle()
-            if c.idle: break # se chamada encerrou, então termina
+        # sched = selectors.DefaultSelector()
+        # sched.register(c.fileno, selectors.EVENT_READ)
+        # while True:
+        #     ev = sched.select(5000)
+        #     if not ev: # se ocorreu timeout
+        #         c.handle_timeout()
+        #     else: # se uma mensagem foi recebida
+        #         c.handle()
+        #     if c.idle: break # se chamada encerrou, então termina
 
+    def call_id(self):
+        return self.cid
 
     def getSDP(self):
         return self.sdp

@@ -259,13 +259,16 @@ class SIPMessage:
     
 class SIPRequest(SIPMessage):
     
-    Metodos = ('INVITE', 'ACK', 'OPTIONS', 'BYE')
+    Metodos = ('INVITE', 'ACK', 'OPTIONS', 'BYE', )
     
     def __init__(self, metodo, uri, **args):
         SIPMessage.__init__(self, args.get('body',''))
         metodo = metodo.upper()
         if not metodo in SIPRequest.Metodos:
-            raise ValueError('metodo invalido: %s' % metodo)
+            if metodo == 'REGISTER':
+                pass
+            else:
+                raise ValueError('metodo invalido: %s' % metodo)
         self.metodo = metodo
         self.uri = uri
                 
