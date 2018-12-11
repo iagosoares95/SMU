@@ -29,7 +29,7 @@ tag: valor do atributo tag (opcional)'''
             
     def __str__(self):
         'Gera o valor do cabeçalho formatado'
-        r = '<sip:%s@%s>' % (self.uri, self.addr)
+        r = 'sip:%s@%s' % (self.uri, self.addr)
         if self.tag:
             r = '%s;tag=%s' % (r, self.tag)
         return r

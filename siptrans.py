@@ -148,14 +148,14 @@ class UserAgent:
         #self.sock.sendto(msg,  (self._destip, self._destport))
         self.sock.connect((self._destip, self._destport))
         self.sock.send(msg)
-        ready = select.select([self.sock], [], [], 3)
-        if ready[0]:
-            data, addr = self.sock.recvfrom(1024)
-            data_str = data.decode('ascii').splitlines()[0]
-            resposta = int(data_str.split()[1])
-            assert resposta == 200
-        else:
-            select.error
+        # ready = select.select([self.sock], [], [], 3)
+        # if ready[0]:
+        #     data, addr = self.sock.recvfrom(1024)
+        #     data_str = data.decode('ascii').splitlines()[0]
+        #     resposta = int(data_str.split()[1])
+        #     assert resposta == 200
+        # else:
+        #     select.error
         
     # Métodos da MEF
     def _START(self, ev, *args):
