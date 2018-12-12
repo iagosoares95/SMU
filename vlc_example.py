@@ -20,7 +20,7 @@ import vlc
 class ApplicationWindow(Gtk.Window):
 
     def __init__(self):
-        self.my_IP = '192.168.1.231'
+        self.my_IP = '192.168.1.225'
         self.my_number = 6032
         self.video_port = 4000
         self.audio_port = 4001
@@ -125,7 +125,7 @@ class ApplicationWindow(Gtk.Window):
 if __name__ == '__main__':
     window = ApplicationWindow()
 
-    my_IP = '192.168.1.231'
+    my_IP = '192.168.1.225'
     my_number = 6032
     video_port = 4000
     audio_port = 4001

@@ -4,7 +4,7 @@ import meusip,siptrans
 import selectors
 
 # cria um UserAgent com originador "100" e IP do UAC=192.168.1.53
-c = siptrans.UserAgent('100', ip='192.168.1.231')
+c = siptrans.UserAgent('100', ip='192.168.1.225')
 
 # adiciona uma descrição de media do tipo audio ao UAC, incluindo
 # respectivos codecs

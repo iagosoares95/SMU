@@ -131,6 +131,8 @@ class UserAgent:
         req.set_header('User-Agent', 'Meu SIP 1.0')
         req.branch = self.branch
         req.CSeq = self.cseq
+	#if metodo == 'ACK':
+            #req.Allow = 'INVITE, ACK, BYE, OPTIONS'
         return req
         
     def _rcv_message(self):

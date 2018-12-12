@@ -232,7 +232,7 @@ class SIPMessage:
     
     @property
     def Allow(self): 
-        return self._headers['Allow'] = 'INVITE, ACK, BYE, OPTIONS'
+        self._headers['Allow'] = 'INVITE, ACK, BYE, OPTIONS'
 
     @ContentType.setter
     def ContentType(self, content):
