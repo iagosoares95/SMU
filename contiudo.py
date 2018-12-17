@@ -51,6 +51,17 @@ class contiudo:
 
     def call_id(self):
         return self.cid
+        c.call(cam_number, ip_server)
+        sched = selectors.DefaultSelector()
+        sched.register(c.fileno, selectors.EVENT_READ)
+        while True:
+            ev = sched.select(5000)
+            if not ev: # se ocorreu timeout
+                c.handle_timeout()
+            else: # se uma mensagem foi recebida
+                c.handle()
+                self.sdp = c.body
+            if c.idle: break # se chamada encerrou, então termina
 
     def getSDP(self):
         return self.sdp

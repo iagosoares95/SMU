@@ -105,8 +105,8 @@ class SIPMessage:
     def __init__(self, body=''):
         self._headers = {}
         self._headers['Max-Forwards'] = str(70)   
-        self._headers['Session-Expires'] = str(1800)
-        self._headers['Allow'] = 'INVITE, ACK, BYE, OPTIONS'
+        #self._headers['Session-Expires'] = str(1800)
+        #self._headers['Allow'] = 'INVITE, ACK, BYE, OPTIONS'
         self.body = body
         self.branch = ''    
         
@@ -230,6 +230,10 @@ class SIPMessage:
     def ContentType(self):
         return self._headers['Content-Type']
     
+    @property
+    def Allow(self): 
+        self._headers['Allow'] = 'INVITE, ACK, BYE, OPTIONS'
+
     @ContentType.setter
     def ContentType(self, content):
         self._headers['Content-Type'] = str(content)

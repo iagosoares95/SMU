@@ -131,6 +131,8 @@ class UserAgent:
         req.set_header('User-Agent', 'Meu SIP 1.0')
         req.branch = self.branch
         req.CSeq = self.cseq
+	#if metodo == 'ACK':
+            #req.Allow = 'INVITE, ACK, BYE, OPTIONS'
         return req
     
     def call_id(self):
@@ -159,9 +161,18 @@ class UserAgent:
         #     assert resposta < 400
         # else:
         #     select.error
+#        ready = select.select([self.sock], [], [], 3)
+#       if ready[0]:
+#            data, addr = self.sock.recvfrom(1024)
+#            data_str = data.decode('ascii').splitlines()[0]
+#            resposta = int(data_str.split()[1])
+#            assert resposta == 200
+#        else:
+#            select.error
         
     # Métodos da MEF
     def _START(self, ev, *args):
+        print("oi")
         if ev == UserAgent.Evento.Mensagem:
             msg = self._rcv_message()
             if not self._req.related_to(msg): return
@@ -229,4 +240,5 @@ class UserAgent:
             self._req = self._gen_request('invite', self._dest, self._destport, self._gensdp())
             self._send()
             self._estado = self._START
-    
+            print (self._estado)
+   

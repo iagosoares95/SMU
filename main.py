@@ -32,9 +32,13 @@ class ApplicationWindow(Gtk.Window):
         self.port_reg_dest = 5060
 
         self.obj_sip = sipp.sipp(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number)
-        self.reg_str = self.obj_sip.register(self.my_number)
-        self.obj_sip.send(self.reg_str, self.ip_server)
+        #self.reg_str = self.obj_sip.register(self.my_number)
+        #self.obj_sip.send(self.reg_str, self.ip_server)
         self.invite_str = self.obj_sip.invite(self.my_number, self.cam_number, self.ip_server)
+        self.obj_sip.send(self.invite_str, self.ip_server)
+        #print (resposta)
+        #if resposta == 200:
+        #    
         Gtk.Window.__init__(self, title="Python-Vlc Media Player")
         self.player_paused=False
         self.is_player_active = False
@@ -85,10 +89,10 @@ class ApplicationWindow(Gtk.Window):
         self.vbox.pack_start(self.hbox, False, False, 0)
 
     def do_delete_event(self, event):
-        self.bye_str = self.obj_sip_reg.bye(self.cam_IP, self.cid);
-        self.obj_sip_reg.send(self.bye_str, self.cam_IP)
-        # self.reg_str = self.obj_sip_reg.deregister()
-        # self.obj_sip_reg.send(self.reg_str, self.ip_server)
+        #self.bye_str = self.obj_sip_reg.bye(self.cam_IP, self.cid);
+        #self.obj_sip_reg.send(self.bye_str, self.cam_IP)
+        self.reg_str = self.obj_sip.deregister(self.my_number)
+        self.obj_sip.send(self.reg_str, self.ip_server)
 
     def stop_player(self, widget, data=None):
         self.player.stop()
@@ -133,7 +137,8 @@ class ApplicationWindow(Gtk.Window):
 if __name__ == '__main__':
     window = ApplicationWindow()
 
-    my_IP = '192.168.1.229'
+    my_IP = '192.168.1.231'
+    my_IP = '192.168.1.225'
     my_number = 6032
     video_port = 4000
     audio_port = 4001
@@ -142,10 +147,9 @@ if __name__ == '__main__':
     port_reg = 5060
     ip_server = '192.168.1.1'
     port_reg_dest = 5060
-    cont = contiudo.contiudo(my_IP, str(my_number), video_port, audio_port, cam_IP, cam_number, ip_server)
-    print("oi")
-    window.set_call_id(cont.call_id())
-    open('stream.sdp','w').write(cont.getSDP())
+    #cont = contiudo.contiudo(my_IP, str(my_number), video_port, audio_port, cam_IP, cam_number, ip_server)
+    #window.set_call_id(cont.call_id())
+    #open('stream.sdp','w').write(cont.getSDP())
     # MRL = 'rtp://239.255.12.42:5004'
     MRL = 'stream.sdp'
     # MRL = 'rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov'
