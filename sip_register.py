@@ -10,14 +10,14 @@ class sip_register:
         self.port_dest = port_dest
         self.call_id = hash(time.time())
         self.ramal = ramal
-    def register(self):
+    def register(self, ramal):
         reg_str =  """REGISTER sip:""" + self.ip_dest + """ SIP/2.0
 Via: SIP/2.0/UDP """ + self.ip + """:""" + str(self.port) + """;rport
-From: <sip:6032@""" + self.ip + """:""" + str(self.port) + """>
-To: <sip:6032@""" + self.ip + """:""" + str(self.port) + """>
+From: <sip:""" + str(self.ramal) + """@""" + self.ip + """:""" + str(self.port) + """>
+To: <sip:""" + str(self.ramal) + """@""" + self.ip + """:""" + str(self.port) + """>
 Call-ID: """ + str(self.call_id) + """@""" + self.ip + """
 CSeq: 1 REGISTER
-Contact: <sip:6032@""" + self.ip + """:""" + str(self.port) + """>
+Contact: <sip:""" + str(self.ramal) + """@""" + self.ip + """:""" + str(self.port) + """>
 Max-Forwards: 70
 User-Agent: SMU20182
 Expires: 9999

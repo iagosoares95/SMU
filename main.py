@@ -13,7 +13,7 @@ from gi.repository import Gtk
 gi.require_version('GdkX11', '3.0')
 from gi.repository import GdkX11
 import contiudo
-import sip_register
+import sipp
 import siptrans
 
 import vlc
@@ -21,7 +21,7 @@ import vlc
 class ApplicationWindow(Gtk.Window):
 
     def __init__(self):
-        self.my_IP = '192.168.1.229'
+        self.my_IP = '192.168.1.231'
         self.my_number = 6032
         self.video_port = 4000
         self.audio_port = 4001
@@ -31,9 +31,10 @@ class ApplicationWindow(Gtk.Window):
         self.ip_server = '192.168.1.1'
         self.port_reg_dest = 5060
 
-        # self.obj_sip_reg = sip_register.sip_register(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number)
-        # self.reg_str = self.obj_sip_reg.register()
-        # self.obj_sip_reg.send(self.reg_str, self.ip_server)
+        self.obj_sip = sipp.sipp(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number)
+        self.reg_str = self.obj_sip.register(self.my_number)
+        self.obj_sip.send(self.reg_str, self.ip_server)
+        self.invite_str = self.obj_sip.invite(self.my_number, self.cam_number, self.ip_server)
         Gtk.Window.__init__(self, title="Python-Vlc Media Player")
         self.player_paused=False
         self.is_player_active = False
