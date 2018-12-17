@@ -99,11 +99,11 @@ Content-Length: 0
         #print (ack_str)
         return ack_str
 
-    def bye(self, local_send_ip, cid, ramalgera, ramalchama):
+    def bye(self, local_send_ip, cid, ramalgera, ramalchama, tag1, tag2):
         bye_str =  """BYE sip:""" + self.ip_dest + """ SIP/2.0
 Via: SIP/2.0/UDP """ + self.ip + """:""" + str(self.port) + """;rport
-From: <sip:""" + self.ramalgera + """@""" + self.ip + """:""" + self.port + """>
-To: <sip:""" + self.ramalchama + """@""" + local_send_ip + """:""" + self.port + """>tag=1234
+From: <sip:""" + self.ramalgera + """@""" + self.ip + """:""" + self.port + """>tag=""" + str(tag1) + """
+To: <sip:""" + self.ramalchama + """@""" + local_send_ip + """:""" + self.port + """>tag=""" + str(tag2) + """"
 Call-ID: """ + self.cid + """
 CSeq: 1 BYE
 Max-Forwards: 70
@@ -122,9 +122,13 @@ Content-Length: 0
         if ready[0]:
             while True:
                 data, addr = sockobj.recvfrom(1024)
-                data_str = data.decode('ascii').splitlines()[0]
+                data_str0 = data.decode('ascii').splitlines()[0]
+                data_str1 = data.decode('ascii').splitlines()[2]
+                data_str2 = data.decode('ascii').splitlines()[3]
+                data1 = data_str1.split('=')[1]
+                data2 = data_str2.split('=')[1]
                 print (data_str[1])
-                resposta = int(data_str.split()[1])
+                resposta = int(data_str0.split()[1])
                 if resposta == 100:
                     print("Tentando - 100 Trying")
                 if resposta == 101:
@@ -136,7 +140,7 @@ Content-Length: 0
                 if resposta == 200:# and self.estado is not "reg":
                     print("oi3") 
                     print("Sucesso - 200 OK")
-                    self.ack_str=self.ack(self.ramalgera, self.ramalchama, self.ip_dest)
+                    self.ack_str=self.ack(self.ramalgera, self.ramalchama, self.ip_dest, self.data1, self.data2)
                     self.send(self.ack_str, self.ip_dest)
                 if resposta == 400:
                     print("Sintaxe errada - 400 Bad request")
