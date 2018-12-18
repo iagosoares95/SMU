@@ -4,7 +4,7 @@ import select
 import meusip
 
 class sipp:
-    def __init__(self, ip='', port=0, ip_dest='', port_dest=5060, ramal='',chama='', ipserver=''):
+    def __init__(self, ip='', port=0, ip_dest='', port_dest=5060, ramal='',chama=''):
         self.ip = ip
         self.port = port
         self.ip_dest = ip_dest
@@ -82,12 +82,12 @@ a=rtpmap:1 PCMA/8000
 
 #    def duzentos(self):
 
-    def ack(self, ramalgera, ramalchama, ipserver):
+    def ack(self, ramalgera, ramalchama, ipserver, tag1, tag2):
         print ("oi3")
         ack_str = """ACK sip:""" + str(ramalchama) + """@""" + str(ipserver) + """ SIP/2.0
 Via: SIP/2.0/UDP """ + self.ip + """:""" + str(self.port) + """;rport
-From: <sip:""" + str(ramalgera) + """@""" + str(ipserver) + """:""" + str(self.port) + """>
-To: <sip:""" + str(ramalchama) + """@""" + str(ipserver) + """:""" + str(self.port) + """>
+From: <sip:""" + str(ramalgera) + """@""" + str(ipserver) + """:""" + str(self.port) + """>tag=""" + str(tag1) + """
+To: <sip:""" + str(ramalchama) + """@""" + str(ipserver) + """:""" + str(self.port) + """>tag=""" + str(tag2) + """"
 Call-ID: """ + str(self.cid) + """@""" + self.ip + """
 CSeq: 2 ACK
 Contact: <sip:""" + str(ramalgera) + """@""" + self.ip + """:""" + str(self.port) + """>
@@ -99,12 +99,12 @@ Content-Length: 0
         #print (ack_str)
         return ack_str
 
-    def bye(self, local_send_ip, cid, ramalgera, ramalchama, tag1, tag2):
+    def bye(self, ramalgera, ramalchama):
         bye_str =  """BYE sip:""" + self.ip_dest + """ SIP/2.0
 Via: SIP/2.0/UDP """ + self.ip + """:""" + str(self.port) + """;rport
-From: <sip:""" + self.ramalgera + """@""" + self.ip + """:""" + self.port + """>tag=""" + str(tag1) + """
-To: <sip:""" + self.ramalchama + """@""" + local_send_ip + """:""" + self.port + """>tag=""" + str(tag2) + """"
-Call-ID: """ + self.cid + """
+From: <sip:""" + str(ramalgera) + """@""" + self.ip_dest + """:""" + str(self.port) + """
+To: <sip:""" + str(ramalchama) + """@""" + self.ip_dest + """:""" + str(self.port) + """
+Call-ID: """ + str(self.cid) + """
 CSeq: 1 BYE
 Max-Forwards: 70
 User-Agent: SMU20182
@@ -142,6 +142,9 @@ Content-Length: 0
                     print("Sucesso - 200 OK")
                     self.ack_str=self.ack(self.ramalgera, self.ramalchama, self.ip_dest, self.data1, self.data2)
                     self.send(self.ack_str, self.ip_dest)
+                    time.sleep(5)
+                    self.bye_str=self.ack(self.ramalgera, self.ramalchama)
+                    self.send(self.bye_str, self.ip_dest)
                 if resposta == 400:
                     print("Sintaxe errada - 400 Bad request")
                 if resposta == 401:

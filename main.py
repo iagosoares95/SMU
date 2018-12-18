@@ -31,7 +31,7 @@ class ApplicationWindow(Gtk.Window):
         self.ip_server = '192.168.1.1'
         self.port_reg_dest = 5060
 
-        self.obj_sip = sipp.sipp(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number)
+        self.obj_sip = sipp.sipp(self.my_IP, self.port_reg, self.ip_server, self.port_reg_dest, self.my_number, self.cam_number)
         #self.reg_str = self.obj_sip.register(self.my_number)
         #self.obj_sip.send(self.reg_str, self.ip_server)
         self.invite_str = self.obj_sip.invite(self.my_number, self.cam_number, self.ip_server)
